@@ -6,6 +6,10 @@ SIMULATION
 
 <img width="767" height="731" alt="Screenshot 2026-05-08 043117" src="https://github.com/user-attachments/assets/550bc1a3-72ba-466e-9969-01f8d6792cff" />
 
+Output (preface)
+
+<img width="2048" height="1152" alt="WhatsApp Image 2026-05-08 at 03 26 57" src="https://github.com/user-attachments/assets/431f5f20-cec8-401b-8a49-e6dafb1f3294" />
+
 
 # Ultrasonic-Radar
 Ömür Atlıhan - 230202047
