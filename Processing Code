@@ -1,0 +1,128 @@
+import processing.serial.*;
+
+Serial portum; 
+String gelenVeri;
+
+
+int aci;
+int mesafe1, mesafe2, mesafe3, mesafe4; 
+
+float araMesafe = 29.5; // Baseline
+int sinir = 30; // MaxRange
+
+void setup() {
+  size(1200, 750);
+  
+  portum = new Serial(this, "COM2", 9600); 
+  background(0);
+}
+
+void draw() {
+ 
+  fill(0, 25); 
+  noStroke();
+  rect(0, 0, 1200, 750);
+  
+  cizimYap(300, 420, aci, mesafe1, mesafe2, "SOL RADAR");
+  
+  
+  cizimYap(900, 420, aci, mesafe3, mesafe4, "SAG RADAR");
+
+
+  float radyan = radians(aci);
+  float x_sol = 0;
+  float y_sol = 0;
+  
+  if (mesafe1 <= sinir && mesafe1 > 0) {
+    x_sol = mesafe1 * cos(radyan);
+    y_sol = -mesafe1 * sin(radyan);
+  }
+
+  float x_sag = araMesafe;
+  float y_sag = 0;
+  
+  if (mesafe3 <= sinir && mesafe3 > 0) {
+    x_sag = (mesafe3 * cos(radyan)) + araMesafe;
+    y_sag = -mesafe3 * sin(radyan);
+  }
+
+ 
+  fill(0);
+  rect(0, 0, width, 110); // Üst bar
+  
+  textAlign(CENTER);
+  if (mesafe1 <= sinir && mesafe3 <= sinir && mesafe1 > 0 && mesafe3 > 0) {
+    float farkX = x_sag - x_sol;
+    float farkY = y_sag - y_sol;
+    float sonuc = sqrt(farkX*farkX + farkY*farkY);
+    
+    fill(0, 255, 0);
+    textSize(25);
+    text("ARADAKİ MESAFE: " + sonuc + " cm", width/2, 60);
+  } else {
+    fill(200, 0, 0);
+    textSize(20);
+    text("CİSİM BEKLENİYOR...", width/2, 60);
+  }
+}
+
+
+void cizimYap(int merkezX, int merkezY, int a, int dOn, int dArka, String isim) {
+  pushMatrix();
+  translate(merkezX, merkezY);
+  
+ 
+  stroke(0, 100, 0);
+  noFill();
+  ellipse(0, 0, 133, 133); // 10cm
+  ellipse(0, 0, 266, 266); // 20cm
+  ellipse(0, 0, 400, 400); // 30cm
+  
+  fill(0, 255, 0);
+  text(isim, 0, 250);
+  
+
+  float r1 = radians(a);
+  stroke(0, 255, 0);
+  line(0, 0, 200 * cos(r1), -200 * sin(r1));
+  
+  if(dOn > 0 && dOn <= sinir) {
+    float mx = map(dOn, 0, 30, 0, 200) * cos(r1);
+    float my = -map(dOn, 0, 30, 0, 200) * sin(r1);
+    fill(255, 0, 0);
+    ellipse(mx, my, 15, 15);
+  }
+  
+
+  float r2 = radians(a + 180);
+  stroke(0, 150, 0);
+  line(0, 0, 200 * cos(r2), -200 * sin(r2));
+  
+  if(dArka > 0 && dArka <= sinir) {
+    float mx2 = map(dArka, 0, 30, 0, 200) * cos(r2);
+    float my2 = -map(dArka, 0, 30, 0, 200) * sin(r2);
+    fill(255, 150, 0);
+    ellipse(mx2, my2, 12, 12);
+  }
+  
+  popMatrix();
+}
+
+
+void serialEvent(Serial p) {
+  gelenVeri = p.readStringUntil('\n');
+  if (gelenVeri != null) {
+    gelenVeri = trim(gelenVeri);
+    String[] parcalar = split(gelenVeri, ',');
+    
+    if (parcalar.length == 5) {
+      aci = int(parcalar[0]);
+      mesafe1 = int(parcalar[1]); // Sol Ön
+      mesafe2 = int(parcalar[2]); // Sol Arka
+      
+      // Senin istediğin o yer değiştirme hatasını buraya da ekledim
+      mesafe4 = int(parcalar[3]); // Sağ Arka
+      mesafe3 = int(parcalar[4]); // Sağ Ön
+    }
+  }
+}
