@@ -1,3 +1,6 @@
+<img width="2558" height="5707" alt="IMG_9808" src="https://github.com/user-attachments/assets/75bce25d-f38d-4c12-a70e-2a0287c77a86" />
+<img width="2314" height="5702" alt="IMG_9807" src="https://github.com/user-attachments/assets/aabd6800-ad3d-4bcb-8bea-5e2fad463856" />
+<img width="4032" height="3024" alt="IMG_9810" src="https://github.com/user-attachments/assets/18d22fa9-dc5a-4c0f-9cae-c147ae432ac5" />
 # Ultrasonic-Radar
 Ömür Atlıhan - 230202047
 Murad Nasirov - 220202902
