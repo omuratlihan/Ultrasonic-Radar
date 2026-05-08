@@ -120,7 +120,7 @@ void serialEvent(Serial p) {
       mesafe1 = int(parcalar[1]); // Sol Ön
       mesafe2 = int(parcalar[2]); // Sol Arka
       
-      // Senin istediğin o yer değiştirme hatasını buraya da ekledim
+     
       mesafe4 = int(parcalar[3]); // Sağ Arka
       mesafe3 = int(parcalar[4]); // Sağ Ön
     }
