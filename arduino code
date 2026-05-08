@@ -1,0 +1,91 @@
+#include <Servo.h>
+
+Servo motor1;
+Servo motor2;
+
+int aci_degeri = 0;
+int saga_donuyor = 1;
+
+void setup() {
+  motor1.attach(3);
+  motor2.attach(9);
+
+  pinMode(4, OUTPUT); 
+  pinMode(5, INPUT);  
+  
+  pinMode(6, OUTPUT); 
+  pinMode(7, INPUT);  
+  
+  pinMode(10, OUTPUT); 
+  pinMode(11, INPUT); 
+  
+  pinMode(12, OUTPUT); 
+  pinMode(13, INPUT); 
+
+  Serial.begin(9600);
+  
+  motor1.write(0);
+  motor2.write(0);
+  delay(1000);
+}
+
+void loop() {
+  if(saga_donuyor == 1) {
+    aci_degeri = aci_degeri + 1;
+    if(aci_degeri >= 180) {
+      saga_donuyor = 0;
+    }
+  } 
+  else {
+    aci_degeri = aci_degeri - 1;
+    if(aci_degeri <= 0) {
+      saga_donuyor = 1;
+    }
+  }
+
+  motor1.write(aci_degeri);
+  motor2.write(aci_degeri);
+
+  long zaman_farki;
+  int mesafe1, mesafe2, mesafe3, mesafe4;
+
+  digitalWrite(4, LOW); delayMicroseconds(2);
+  digitalWrite(4, HIGH); delayMicroseconds(10);
+  digitalWrite(4, LOW);
+  zaman_farki = pulseIn(5, HIGH, 20000);
+  mesafe1 = zaman_farki * 0.034 / 2;
+  if(mesafe1 == 0 || mesafe1 > 150) { mesafe1 = 150; }
+
+  digitalWrite(6, LOW); delayMicroseconds(2);
+  digitalWrite(6, HIGH); delayMicroseconds(10);
+  digitalWrite(6, LOW);
+  zaman_farki = pulseIn(7, HIGH, 20000);
+  mesafe2 = zaman_farki * 0.034 / 2;
+  if(mesafe2 == 0 || mesafe2 > 150) { mesafe2 = 150; }
+
+  digitalWrite(10, LOW); delayMicroseconds(2);
+  digitalWrite(10, HIGH); delayMicroseconds(10);
+  digitalWrite(10, LOW);
+  zaman_farki = pulseIn(11, HIGH, 20000);
+  mesafe3 = zaman_farki * 0.034 / 2;
+  if(mesafe3 == 0 || mesafe3 > 150) { mesafe3 = 150; }
+
+  digitalWrite(12, LOW); delayMicroseconds(2);
+  digitalWrite(12, HIGH); delayMicroseconds(10);
+  digitalWrite(12, LOW);
+  zaman_farki = pulseIn(13, HIGH, 20000);
+  mesafe4 = zaman_farki * 0.034 / 2;
+  if(mesafe4 == 0 || mesafe4 > 150) { mesafe4 = 150; }
+
+  Serial.print(aci_degeri);
+  Serial.print(",");
+  Serial.print(mesafe1);
+  Serial.print(",");
+  Serial.print(mesafe2);
+  Serial.print(",");
+  Serial.print(mesafe3);
+  Serial.print(",");
+  Serial.println(mesafe4);
+
+  delay(60);
+}
